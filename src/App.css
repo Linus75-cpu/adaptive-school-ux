@@ -29,6 +29,46 @@ body {
   background-color: #050505; /* Slightly darker to make pattern pop */
   color: white;
   font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+@keyframes pattern-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 160px 160px;
+  }
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: rotate(0deg) translate(-50%, -50%);
+  }
+  100% {
+    transform: rotate(360deg) translate(-50%, -50%);
+  }
+}
+
+@keyframes wave-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
 }
 
 .checkered-pattern {
@@ -44,12 +84,59 @@ body {
   background-size: 160px 160px; /* Slightly larger tiles */
   background-attachment: fixed;
   background-repeat: repeat;
-  opacity: 0.22; /* Increased from 0.08 for better visibility */
+  opacity: 0.6; /* Reduced to 60% as requested */
   z-index: -10;
+  pointer-events: none;
+  animation: pattern-drift 60s linear infinite;
+  filter: url(#wavy-filter); /* This will be added in Shell.tsx */
+}
+
+/* Wavy Background Layers */
+.wave-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -15;
   pointer-events: none;
 }
 
-/* New CSS class for 50% opacity background around white text */
+.wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200vw;
+  height: 200vw;
+  background: radial-gradient(circle at center, var(--wave-color, rgba(146, 64, 14, 0.15)) 0%, transparent 70%);
+  border-radius: 43%;
+  transform-origin: 0 0;
+  animation: wave-animation var(--wave-duration, 30s) infinite linear;
+  opacity: 0.4;
+}
+
+.wave-1 {
+  --wave-color: rgba(146, 64, 14, 0.1);
+  --wave-duration: 40s;
+  top: 45%;
+}
+
+.wave-2 {
+  --wave-color: rgba(255, 255, 255, 0.05);
+  --wave-duration: 50s;
+  top: 55%;
+  left: 45%;
+  animation-direction: reverse;
+}
+
+.wave-3 {
+  --wave-color: rgba(0, 0, 0, 0.2);
+  --wave-duration: 60s;
+  top: 50%;
+  left: 55%;
+}
+
 .white-text-overlay {
   background-color: rgba(0, 0, 0, 0.5); /* 50% opacity black background */
   padding: 0.15rem 0.4rem;
@@ -99,4 +186,19 @@ body {
 .hero-pattern {
   background-color: #0a0a0a;
   background-image: radial-gradient(circle at center, rgba(146, 64, 14, 0.1) 0%, transparent 70%);
+}
+
+.animate-blob {
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+.animate-blob-delayed {
+  animation: float-slow 25s ease-in-out infinite reverse;
+  animation-delay: -5s;
+}
+
+.wavy-svg-container {
+  position: absolute;
+  width: 0;
+  height: 0;
 }

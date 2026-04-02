@@ -36,6 +36,18 @@ const Shell: React.FC<ShellProps> = ({ children, activeTab, setActiveTab }) => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden text-white font-sans">
+      {/* SVG Wave Filter Definitions */}
+      <svg className="wavy-svg-container" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="wavy-filter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.01" numOctaves="2" result="turbulence">
+              <animate attributeName="baseFrequency" values="0.005 0.01;0.01 0.015;0.005 0.01" dur="30s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="40" />
+          </filter>
+        </defs>
+      </svg>
+
       {/* Dynamic Sidebar */}
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 border-r border-white/10 bg-black/90 backdrop-blur-3xl transition-transform duration-300 transform md:relative md:translate-x-0 flex flex-col",
@@ -164,11 +176,18 @@ const Shell: React.FC<ShellProps> = ({ children, activeTab, setActiveTab }) => {
             </AnimatePresence>
           </div>
           
+          {/* Wavy Background Elements */}
+          <div className="wave-container">
+            <div className="wave wave-1" />
+            <div className="wave wave-2" />
+            <div className="wave wave-3" />
+          </div>
+
           {/* Background Ambient Effects - Layered over the checkered pattern */}
           <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#92400e]/10 blur-[120px] rounded-full" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#451a03]/10 blur-[120px] rounded-full" />
-            <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/carbon-fibre.png')` }} />
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#92400e]/15 blur-[120px] rounded-full animate-blob" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#451a03]/15 blur-[120px] rounded-full animate-blob-delayed" />
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/carbon-fibre.png')` }} />
           </div>
         </div>
       </main>
